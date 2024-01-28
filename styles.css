@@ -1804,6 +1804,10 @@ footer .footer__inner {
 .photography--copy span {
   color: #fff;
   display: block;
+  text-shadow: 0 0 80px rgb(0, 0, 0),
+             0 0 80px rgb(0, 0, 0),
+             0 0 40em rgb(0, 0, 0);
+
   font-family: Articulat CF, system-ui, sans-serif;
   font-size: 96px;
   font-weight: 600;
@@ -2179,7 +2183,7 @@ footer .footer__inner {
 }
 .work--item {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.068);
-  align-items: flex-start;
+  /* align-items: flex-start;  MODIFICHE APPORTATE, BUTTON*/
   background-color: #fff;
   border-radius: 32px;
   color: #242424;
@@ -2191,6 +2195,26 @@ footer .footer__inner {
   width: calc(50% - 16px);
   will-change: transform;
 }
+
+
+
+
+.work--item button {
+  font-size: 34px;
+  background: #fd141400;
+  border: none;
+  font-size: 34px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-bottom: -45px;
+  padding: 0px 5px; /* Aggiungi il padding desiderato */
+  z-index: 20;
+  transition: transform 0.2s ease-in-out;
+}
+.work--item button:hover {
+  transform: scale(1.1); 
+}
+
 @media (max-width: 767px) {
   .work--item {
     width: 100%;
