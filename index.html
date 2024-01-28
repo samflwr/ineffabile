@@ -39,14 +39,26 @@
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BL79JZ94X8"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
 
-        gtag('config', 'G-BL79JZ94X8');
+    <!-- Aggiungi questo link al tuo HTML per includere FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RERB66LFB8"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-RERB66LFB8');
     </script>
     <!-- FINE Google tag (gtag.js) -->
+
+    <!-- traduzione -->
+    <script src="https://cdn.jsdelivr.net/npm/i18next@21.3.0/dist/umd/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-browser-languagedetector@6.0.0/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
+
 </head>
 
 <body class="home">
@@ -70,7 +82,7 @@
     </nav>
     <main class="content" id="content" data-template="home">
         <section class="hero">
-            <h1>discover the magic of<br><span id="hero-heading-key-line">design</span> brought to life.</h1>
+            <h1>discover the <br>magic of <span id="hero-heading-key-line">design</span> <br>brought to life.</h1>
             <div id="hero-text-background-wrapper"><canvas id="hero-text-background" aria-hidden="true"></canvas></div>
             <canvas id="hero-indicator" aria-hidden="true"></canvas>
             <div class="fallback-image">
@@ -345,26 +357,32 @@
                             class="visually-hidden">, Vivienne</span></a>
                 </article>
 
+
+                
+                
                 <article class="work--item work--item__full work--item__blu"> <!-- green -->
-                        <h3>ineffable</h3>
-                    <span>adjective</span>
+                    <button id="language-icon" onclick="toggleLanguage()">
+                        <i class="fas fa-language"></i>
+                    </button>
+                    
+                    
+                    
+                    <h3 id="word">ineffable</h3>
+                    <p id="pronunciation">/ɪnˈɛfəbl/</p>
                     <hr>
+                    <span id="word-type">adjective</span>
+                    <p id="definition">too great or extreme to be expressed or described in words.</p>
                     
-                    <p>too great or extreme to be expressed or described in words.</p>
+                    <p id="example" style="opacity: 0.5;">"the ineffable mysteries of the soul."</p>
                     <br>
-                    <p><strong style="font-weight: bold;">example:</strong> "the ineffable mysteries of the soul."</p>
                     
-                    <p style="margin-bottom: 5px;"><strong style="font-weight: bold;">synonyms:</strong>
-                        <span style="border: 1px solid #ccc; border-radius: 9px; padding: 2px 5px; display: inline-block; margin-right: 5px;">inexpressible</span>
-                        <span style="border: 1px solid #ccc; border-radius: 9px; padding: 2px 5px; display: inline-block; margin-right: 5px;">indescribable</span>
-                        <span style="border: 1px solid #ccc; border-radius: 9px; padding: 2px 5px; display: inline-block; margin-right: 5px;">beyond words</span>
-                        <span style="border: 1px solid #ccc; border-radius: 9px; padding: 2px 5px; display: inline-block; margin-right: 5px;">beyond description</span>
+                    <p style="margin-bottom: 5px;"><strong id="synonym" style="color: rgb(92, 142, 98);">synonyms: </strong>
+                        <span class="synonym" style="border: 1px solid #ccc; border-radius: 9px; padding: 2px 5px; display: inline-block; margin-right: 5px;">inexpressible</span>
+                        <span class="synonym" style="border: 1px solid #ccc; border-radius: 9px; padding: 2px 5px; display: inline-block; margin-right: 5px;">indescribable</span>
+                        <span class="synonym" style="border: 1px solid #ccc; border-radius: 9px; padding: 2px 5px; display: inline-block; margin-right: 5px;">beyond words</span>
+                        <span class="synonym"  style="border: 1px solid #ccc; border-radius: 9px; padding: 2px 5px; display: inline-block; margin-right: 5px;">beyond description</span>
                     </p>
-                    
-                    
                 </article>
-                
-                
                 <!-- <article class="work--item">
                     <h3>Centretek</h3><span>2019 – 2021</span>
                     <hr>
