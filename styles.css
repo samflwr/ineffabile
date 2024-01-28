@@ -584,7 +584,7 @@ footer .footer__inner {
     #aee8fa 50%,
     #68bde7 66.66666%,
     #6bd490 83.33333%,
-    #a2f6cf
+    #2fa06b
   );
   color: #fff;
 }
@@ -880,7 +880,7 @@ footer .footer__inner {
   opacity: 0;
 }
 .animation .wrapper .word-wrap .overlay {
-  background-color: #68bde7;
+  background-color: #ffffff;
   height: 100%;
   left: 0;
   position: absolute;
@@ -891,16 +891,16 @@ footer .footer__inner {
   z-index: 1;
 }
 .animation .wrapper .word-wrap:nth-of-type(2) .overlay {
-  background-color: #d66761;
+  background-color: #ffffff;
 }
 .animation .wrapper .word-wrap:nth-of-type(3) .overlay {
-  background-color: #c4c4c4;
+  background-color: #ffffff;
 }
 .animation .wrapper .word-wrap:nth-of-type(4) .overlay {
-  background-color: #aee8fa;
+  background-color: #ffffff;
 }
 .animation .wrapper .word-wrap:nth-of-type(5) .overlay {
-  background-color: #397e51;
+  background-color: #ffffff;
 }
 .animation .wrapper .flourish-wrap {
   display: inline-block;
@@ -1485,8 +1485,10 @@ footer .footer__inner {
 .dimensions--copy span.two {
   display: none;
 }
+
+/* 2D 3D 4D COLO BACKUP */
 .enhanced .dimensions--copy span.two {
-  color: #5aaf78;
+  color: #189d47;
   display: inline-block;
   margin-left: 0.25em;
   overflow: visible;
@@ -2233,7 +2235,7 @@ footer .footer__inner {
   margin-bottom: 8px;
 }
 .work--item .work--title .portfolio {
-  background-image: url(portfolio.svg);
+  background-image: url(src/public/portfolio.svg);
   height: 23px;
   width: 23px;
 }
@@ -2244,7 +2246,7 @@ footer .footer__inner {
   background-size: contain;
 }
 .work--item .work--title .vivienne {
-  background-image: url(vivienne.svg);
+  background-image: url(src/public/vivienne.svg);
   height: 25px;
   width: 25px;
 }
