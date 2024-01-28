@@ -361,7 +361,7 @@
                 
                 <article class="work--item work--item__full work--item__blu"> <!-- green -->
                     <button id="language-icon" onclick="toggleLanguage()">
-                        <i style="text-decoration: none;" class="fas fa-language"></i>
+                        <i style="text-decoration: none; color: #000000;" class="fas fa-language"></i>
                     </button>
                     
                     
@@ -410,6 +410,59 @@
 
             </div>
         </section>
+        <script>
+            let currentLanguage = 'en';
+
+            const translations = {
+                'en': {
+                    'word': 'ineffable',
+                    'pronunciation': '/ɪnˈɛfəbl/',
+                    'word-type': 'adjective',
+                    'definition': 'too great or extreme to be expressed or described in words.',
+                    'synonyms': ['inexpressible', 'indescribable', 'beyond words', 'beyond description'],
+                    'example': '"the ineffable mysteries of the soul."',
+                    'synonym': 'synonyms: '
+                },
+                'it': {
+                    'word': 'ineffabile',
+                    'pronunciation': '/i·nef·fà·bi·le/',
+                    'word-type': 'aggettivo',
+                    'definition': 'troppo grande o estremo per essere espresso o descritto a parole.',
+                    'synonyms': ['inesprimibile', 'indescrivibile', 'oltre le parole', 'oltre la descrizione'],
+                    'example': '"i misteri ineffabili dell\'anima."',
+                    'synonym': 'sinonimi: '
+                }
+                // Aggiungi altre lingue secondo necessità
+            };
+
+            function toggleLanguage() {
+                currentLanguage = (currentLanguage === 'en') ? 'it' : 'en';
+                changeLanguage(currentLanguage);
+            }
+
+            function changeLanguage(lang) {
+                const translationData = translations[lang] || translations['en'];
+
+                // Aggiorna tutti gli elementi HTML con le traduzioni corrispondenti
+                document.getElementById('word').innerText = translationData['word'];
+                document.getElementById('pronunciation').innerText = translationData['pronunciation'];
+                document.getElementById('word-type').innerText = translationData['word-type'];
+                document.getElementById('definition').innerText = translationData['definition'];
+                document.getElementById('example').innerText = translationData['example'];
+                document.getElementById('synonym').innerText = translationData['synonym'];
+
+                // Aggiorna sinonimi
+                const synonymElements = document.querySelectorAll('.synonym');
+                for (let i = 0; i < synonymElements.length; i++) {
+                    synonymElements[i].innerText = translationData['synonyms'][i] || '';
+                }
+            }
+
+
+
+
+
+        </script>
     </main>
     <footer aria-label="Footer">
         <!-- Samir Buzatu -->
