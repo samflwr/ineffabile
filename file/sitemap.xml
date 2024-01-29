@@ -8,9 +8,13 @@
 
 
 <url>
-  <loc>https://ineffabile.com/</loc>
-  <lastmod>2024-01-29T01:09:35+00:00</lastmod>
-</url>
+    <loc>https://ineffabile.com/</loc>
+    <lastmod>2024-01-29T01:09:35+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
 
 
 </urlset>
+
+
