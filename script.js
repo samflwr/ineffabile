@@ -2166,7 +2166,8 @@
                 height: window.innerHeight,
                 aspectRatio: window.innerWidth / window.innerHeight
             },
-            // Vertex Shader
+            // Vertex Shader   --- // Vertex Shader --     float zoomedIntensity = (pow(abs(sin(PI * pixelIntensity / 1.6)), 64.0) * 3.2) + 0.9; 
+                                   //                      float zoomedIntensity = (pow(abs(sin(PI * pixelIntensity / 2.0)), 34.0) * 3.0) + 0.8;
             this.gridShader = new c.Program(this.renderer.gl, `
                 #ifdef GL_FRAGMENT_PRECISION_HIGH
                     precision highp float;
@@ -2194,7 +2195,7 @@
 
                 void main() {
                     float pixelIntensity = uIntensity * (1.0 - length(aUV.xy - uCenterPoint));
-                    float zoomedIntensity = (pow(abs(sin(PI * pixelIntensity / 2.0)), 34.0) * 3.0) + 0.8;
+                    float zoomedIntensity = (pow(abs(sin(PI * pixelIntensity / 1.6)), 64.0) * 3.2) + 0.9; 
                     vec4 newPos = aPosition;
                     newPos.z += zoomedIntensity * 30.0;
                     vec4 position = uViewProjectionMatrix * uLocalMatrix * newPos;
