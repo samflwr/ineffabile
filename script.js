@@ -2287,7 +2287,7 @@
                     vec4 startColor = vec4(1.0, 1.0, 1.0, 0.9);
                     vec4 endColor = vec4(10.0 / 255.0, 74.0 / 255.0, 35.0 / 255.0, 1.0);
                     float distance = (0.5 - length(vUV - vec2(0.5))) * 1.0;
-                    float thickness = (uBaseThickness * (1.0 - uTransition)) + 0.015;
+                    float thickness = (uBaseThickness * (1.0 - uTransition)) + 0.005;
                     float width = smoothstep(0.001 + thickness, 0.0 + thickness, distance);
                     width = mix(0.0, width, smoothstep(0.0, 0.005, distance));
 
@@ -2299,6 +2299,21 @@
                     // gl_FragColor = vec4(distance);
                 }
                 `);
+                // void main() {
+                //     vec4 startColor = vec4(1.0, 1.0, 1.0, 0.9);
+                //     vec4 endColor = vec4(10.0 / 255.0, 74.0 / 255.0, 35.0 / 255.0, 1.0);
+                //     float distance = (0.5 - length(vUV - vec2(0.5))) * 1.0;
+                //     float thickness = (uBaseThickness+1.0 * (0.95 - uTransition)) + 0.005;
+                //     float width = smoothstep(0.001 + thickness, 0.0 + thickness, distance);
+                //     width = mix(0.0, width, smoothstep(0.0, 0.005, distance));
+
+                //     vec4 finalColor = mix(startColor, endColor, uTransition);
+
+                //     gl_FragColor = mix(vec4(0.0), finalColor, width);
+
+                //     // Uncomment the line below for debugging distance
+                //     // gl_FragColor = vec4(distance);
+                // }
 
         }
         createGridGeometry(t, e)
@@ -3394,19 +3409,41 @@
                 duration: .25
             }, 1.75)
         }
-        onUpdate(t)
-        {
-            this.progress.value >= 0 && this.progress.value < 1.25 ? this.background.forEach((t => {
-                t.style.backgroundColor = "rgb(38, 64, 44)", //BACKUP WALLPAPER SFONDO 3D 4D
-                t.style.opacity = 2 * this.progress.value
-            })) : this.progress.value >= 1.25 && this.progress.value < 1.75 ? this.background.forEach((t => {
-                t.style.backgroundColor = "rgb(64, 37, 38)", //BACKUP WALLPAPER SFONDO 3D 4D
-                t.style.opacity = 1
-            })) : this.background.forEach((t => {
-                t.style.backgroundColor = "rgb(36, 59, 64)", //BACKUP WALLPAPER SFONDO 3D 4D
-                t.style.opacity = 1
-            }))
+        onUpdate(t) { //modifiche
+            if (this.progress.value >= 0 && this.progress.value < 1.25) {
+                const gradientColor = interpolateColor("#000000", "#002404", this.progress.value / 1.25);
+        
+                this.background.forEach((t => {
+                    t.style.backgroundColor = gradientColor;
+                    t.style.opacity = 4 * this.progress.value;
+                }));
+            } else if (this.progress.value >= 1.25 && this.progress.value < 1.75) {
+                this.background.forEach((t => {
+                    t.style.backgroundColor = "#401213"; // Darker red
+                    t.style.opacity = 1;
+                }));
+            } else {
+                this.background.forEach((t => {
+                    t.style.backgroundColor = "#001D20"; // Darker blue
+                    t.style.opacity = 1;
+                }));
+            }
         }
+    }
+    function interpolateColor(color1, color2, factor) { //aggiunto da me backup
+        const r1 = parseInt(color1.slice(1, 3), 16);
+        const g1 = parseInt(color1.slice(3, 5), 16);
+        const b1 = parseInt(color1.slice(5, 7), 16);
+    
+        const r2 = parseInt(color2.slice(1, 3), 16);
+        const g2 = parseInt(color2.slice(3, 5), 16);
+        const b2 = parseInt(color2.slice(5, 7), 16);
+    
+        const r = Math.round(r1 + factor * (r2 - r1));
+        const g = Math.round(g1 + factor * (g2 - g1));
+        const b = Math.round(b1 + factor * (b2 - b1));
+    
+        return `rgb(${r},${g},${b})`;
     }
     class L {
         constructor()
@@ -3425,7 +3462,65 @@
                 height: window.innerHeight,
                 aspectRatio: window.innerWidth / window.innerHeight
             },
-            this.tesseractShader = new c.Program(this.renderer.gl, "#ifdef GL_FRAGMENT_PRECISION_HIGH\n\tprecision highp float;\n#else\n\tprecision mediump float;\n#define GLSLIFY 1\n#endif\n\nattribute vec4 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aUV;\n\nuniform mat4 uViewProjectionMatrix;\nuniform mat4 uLocalMatrix;\n\nvarying vec3 vNormal;\nvarying vec2 vUV;\nvarying vec3 vPos;\n\nvoid main() {\n\tvec4 position = uViewProjectionMatrix * uLocalMatrix * aPosition;\n\tgl_Position = position;\n\tvNormal = aNormal;\n\tvUV = aUV;\n\tvPos = position.xyz;\n}", "#ifdef GL_FRAGMENT_PRECISION_HIGH\n\tprecision highp float;\n#else\n\tprecision mediump float;\n#define GLSLIFY 1\n#endif\n\nuniform float uGreenToRed;\nuniform float uRedToBlue;\n\nvarying vec3 vNormal;\nvarying vec2 vUV;\nvarying vec3 vPos;\n\nvoid main() {\n\tfloat distance = 0.1 + (1.0 - 0.1) * (-vPos.z - (-0.2828427125)) / (0.2828427125 - (-0.2828427125));\n\tvec3 red = vec3(0.960, 0.752, 0.698) * distance;\n\tvec3 green = vec3(0.635, 0.964, 0.811) * distance;\n\tvec3 blue = vec3(0.682, 0.909, 0.980) * distance;\n\n\tvec3 greenToRed = mix(green, red, uGreenToRed);\n\tvec3 redToBlue = mix(greenToRed, blue, uRedToBlue);\n\tvec4 color = vec4(redToBlue, 1.0);\n\n\tgl_FragColor = color;\n}"),
+            this.tesseractShader = new c.Program(
+                this.renderer.gl,
+                `
+                #ifdef GL_FRAGMENT_PRECISION_HIGH
+                    precision highp float;
+                #else
+                    precision mediump float;
+                    #define GLSLIFY 1
+                #endif
+            
+                attribute vec4 aPosition;
+                attribute vec3 aNormal;
+                attribute vec2 aUV;
+            
+                uniform mat4 uViewProjectionMatrix;
+                uniform mat4 uLocalMatrix;
+            
+                varying vec3 vNormal;
+                varying vec2 vUV;
+                varying vec3 vPos;
+            
+                void main() {
+                    vec4 position = uViewProjectionMatrix * uLocalMatrix * aPosition;
+                    gl_Position = position;
+                    vNormal = aNormal;
+                    vUV = aUV;
+                    vPos = position.xyz;
+                }
+                `,
+                `
+                #ifdef GL_FRAGMENT_PRECISION_HIGH
+                    precision highp float;
+                #else
+                    precision mediump float;
+                    #define GLSLIFY 1
+                #endif
+            
+                uniform float uGreenToRed;
+                uniform float uRedToBlue;
+            
+                varying vec3 vNormal;
+                varying vec2 vUV;
+                varying vec3 vPos;
+            
+                void main() {
+                    float distance = 0.1 + (1.0 - 0.1) * (-vPos.z - (-0.2828427125)) / (0.2828427125 - (-0.2828427125));
+                    vec3 green = vec3(0.286, 0.608, 0.318);
+                    vec3 red = vec3(0.784, 0.427, 0.396); 
+                    vec3 blue = vec3(0.490, 0.733, 0.890);
+
+
+                    vec3 greenToRed = mix(green, red, uGreenToRed);
+                    vec3 redToBlue = mix(greenToRed, blue, uRedToBlue);
+                    vec4 color = vec4(redToBlue, 1.0);
+            
+                    gl_FragColor = color;
+                }
+                `
+            );
             this.createTesseracts()
         }
         createCube(t)
