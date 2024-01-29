@@ -1956,7 +1956,137 @@
             this.renderer = new c.Renderer(this.canvas),
             this.volume = new c.Volume,
             this.camera = new c.Orthographic(-1, 1, -1, 1, -1, 1);
-            const t = new c.Program(this.renderer.gl, "#ifdef GL_FRAGMENT_PRECISION_HIGH\n\tprecision highp float;\n#else\n\tprecision mediump float;\n#define GLSLIFY 1\n#endif\n\nattribute vec4 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aUV;\n\nuniform mat4 uViewProjectionMatrix;\nuniform mat4 uNormalMatrix;\nuniform mat4 uLocalMatrix;\nuniform float uTime;\n\nvarying vec3 vNormal;\nvarying vec2 vUV;\nvarying vec3 vPos;\n\nvec4 permute(vec4 x) { return mod(((x*34.0)+1.0)*x, 289.0); }\nvec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }\n\nfloat snoise(vec3 v) { \n\tconst vec2  C = vec2(1.0/6.0, 1.0/3.0) ;\n\tconst vec4  D = vec4(0.0, 0.5, 1.0, 2.0);\n\n\tvec3 i  = floor(v + dot(v, C.yyy) );\n\tvec3 x0 =   v - i + dot(i, C.xxx) ;\n\n\tvec3 g = step(x0.yzx, x0.xyz);\n\tvec3 l = 1.0 - g;\n\tvec3 i1 = min( g.xyz, l.zxy );\n\tvec3 i2 = max( g.xyz, l.zxy );\n\n\tvec3 x1 = x0 - i1 + 1.0 * C.xxx;\n\tvec3 x2 = x0 - i2 + 2.0 * C.xxx;\n\tvec3 x3 = x0 - 1. + 3.0 * C.xxx;\n\n\ti = mod(i, 289.0 ); \n\tvec4 p = permute( permute( permute( \n\t\ti.z + vec4(0.0, i1.z, i2.z, 1.0 ))\n\t\t+ i.y + vec4(0.0, i1.y, i2.y, 1.0 )) \n\t\t+ i.x + vec4(0.0, i1.x, i2.x, 1.0 ));\n\n\tfloat n_ = 1.0/7.0;\n\tvec3  ns = n_ * D.wyz - D.xzx;\n\n\tvec4 j = p - 49.0 * floor(p * ns.z *ns.z);\n\n\tvec4 x_ = floor(j * ns.z);\n\tvec4 y_ = floor(j - 7.0 * x_ );\n\n\tvec4 x = x_ *ns.x + ns.yyyy;\n\tvec4 y = y_ *ns.x + ns.yyyy;\n\tvec4 h = 1.0 - abs(x) - abs(y);\n\n\tvec4 b0 = vec4( x.xy, y.xy );\n\tvec4 b1 = vec4( x.zw, y.zw );\n\n\tvec4 s0 = floor(b0)*2.0 + 1.0;\n\tvec4 s1 = floor(b1)*2.0 + 1.0;\n\tvec4 sh = -step(h, vec4(0.0));\n\n\tvec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;\n\tvec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;\n\n\tvec3 p0 = vec3(a0.xy,h.x);\n\tvec3 p1 = vec3(a0.zw,h.y);\n\tvec3 p2 = vec3(a1.xy,h.z);\n\tvec3 p3 = vec3(a1.zw,h.w);\n\n\tvec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));\n\tp0 *= norm.x;\n\tp1 *= norm.y;\n\tp2 *= norm.z;\n\tp3 *= norm.w;\n\n\tvec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);\n\tm = m * m;\n\treturn 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );\n}\n\nfloat map(float value, float min1, float max1, float min2, float max2) {\n\treturn min2 + (value - min1) * (max2 - min2) / (max1 - min1);\n}\n\nvoid main() {\n\tvec4 position = uViewProjectionMatrix * uLocalMatrix * aPosition;\n\tposition.z = map(snoise(vec3((position.xy / 2.0), (uTime / 2.0))), -0.8660254038, 0.8660254038, 0.0, 1.0);\n\tgl_Position = position;\n\tvNormal = aNormal + 0.5;\n\tvUV = aUV;\n\tvPos = position.xyz;\n}", "#ifdef GL_FRAGMENT_PRECISION_HIGH\n\tprecision highp float;\n#else\n\tprecision mediump float;\n#define GLSLIFY 1\n#endif\n\nuniform float uTime;\n\nvarying vec3 vNormal;\nvarying vec2 vUV;\nvarying vec3 vPos;\n\nvoid main() {\n\tvec4 a = vec4(0.83, 0.40, 0.38, 1.0);\n\tvec4 b = vec4(0.96, 0.75, 0.69, 1.0);\n\tvec4 c = vec4(0.40, 0.74, 0.90, 1.0);\n\tvec4 d = vec4(0.55, 0.88, 0.98, 1.0);\n\tvec4 e = vec4(0.41, 0.83, 0.56, 1.0);\n\tvec4 f = vec4(0.46, 0.92, 0.70, 1.0);\n\n\tfloat step = 1.0 / 4.0;\n\n\tvec4 color = a;\n\tcolor = mix(color, c, smoothstep(step * 1.0, step * 2.0, vPos.z));\n\tcolor = mix(color, e, smoothstep(step * 2.0, step * 3.0, vPos.z));\n\tcolor = mix(color, vec4(1.0), smoothstep(step * 3.0, step * 4.0, vPos.z));\n\n\tgl_FragColor = color;\n}"),
+            const t = new c.Program(this.renderer.gl, `
+                            #ifdef GL_FRAGMENT_PRECISION_HIGH
+                                precision highp float;
+                            #else
+                                precision mediump float;
+                                #define GLSLIFY 1
+                            #endif
+
+                            attribute vec4 aPosition;
+                            attribute vec3 aNormal;
+                            attribute vec2 aUV;
+
+                            uniform mat4 uViewProjectionMatrix;
+                            uniform mat4 uNormalMatrix;
+                            uniform mat4 uLocalMatrix;
+                            uniform float uTime;
+
+                            varying vec3 vNormal;
+                            varying vec2 vUV;
+                            varying vec3 vPos;
+
+                            vec4 permute(vec4 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+                            float snoise(vec3 v) { 
+                                const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+                                const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+
+                                vec3 i  = floor(v + dot(v, C.yyy) );
+                                vec3 x0 = v - i + dot(i, C.xxx);
+
+                                vec3 g = step(x0.yzx, x0.xyz);
+                                vec3 l = 1.0 - g;
+                                vec3 i1 = min( g.xyz, l.zxy );
+                                vec3 i2 = max( g.xyz, l.zxy );
+
+                                vec3 x1 = x0 - i1 + 1.0 * C.xxx;
+                                vec3 x2 = x0 - i2 + 2.0 * C.xxx;
+                                vec3 x3 = x0 - 1. + 3.0 * C.xxx;
+
+                                i = mod(i, 289.0 );
+                                vec4 p = permute(permute(permute(
+                                            i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+                                            + i.y + vec4(0.0, i1.y, i2.y, 1.0 )) 
+                                            + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+
+                                float n_ = 1.0/7.0;
+                                vec3 ns = n_ * D.wyz - D.xzx;
+
+                                vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+
+                                vec4 x_ = floor(j * ns.z);
+                                vec4 y_ = floor(j - 7.0 * x_ );
+
+                                vec4 x = x_ * ns.x + ns.yyyy;
+                                vec4 y = y_ * ns.x + ns.yyyy;
+                                vec4 h = 1.0 - abs(x) - abs(y);
+
+                                vec4 b0 = vec4( x.xy, y.xy );
+                                vec4 b1 = vec4( x.zw, y.zw );
+
+                                vec4 s0 = floor(b0)*2.0 + 1.0;
+                                vec4 s1 = floor(b1)*2.0 + 1.0;
+                                vec4 sh = -step(h, vec4(0.0));
+
+                                vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+                                vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+
+                                vec3 p0 = vec3(a0.xy,h.x);
+                                vec3 p1 = vec3(a0.zw,h.y);
+                                vec3 p2 = vec3(a1.xy,h.z);
+                                vec3 p3 = vec3(a1.zw,h.w);
+
+                                vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+                                p0 *= norm.x;
+                                p1 *= norm.y;
+                                p2 *= norm.z;
+                                p3 *= norm.w;
+
+                                vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                                m = m * m;
+                                return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
+                            }
+
+                            float map(float value, float min1, float max1, float min2, float max2) {
+                                return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+                            }
+
+                            void main() {
+                                vec4 position = uViewProjectionMatrix * uLocalMatrix * aPosition;
+                                position.z = map(snoise(vec3((position.xy / 1.0), (uTime / 1.0))), -0.8660254038, 0.8660254038, 0.004, 1.20);
+                                gl_Position = position;
+                                vNormal = aNormal + 0.5;
+                                vUV = aUV;
+                                vPos = position.xyz;
+                            }
+                            `, `
+                            #ifdef GL_FRAGMENT_PRECISION_HIGH
+                                precision highp float;
+                            #else
+                                precision mediump float;
+                                #define GLSLIFY 1
+                            #endif
+
+                            uniform float uTime;
+
+                            varying vec3 vNormal;
+                            varying vec2 vUV;
+                            varying vec3 vPos;
+
+                            void main() {
+                                vec4 a = vec4(0.9, 0.8, 0.7, 1.0);  
+                                vec4 b = vec4(0.87, 0.72, 0.57, 1.0); 
+                                vec4 c = vec4(0.69, 0.54, 0.41, 1.0);
+                                vec4 d = vec4(0.5, 0.33, 0.22, 1.0);  
+                                vec4 e = vec4(0.61, 0.4, 0.27, 1.0);  
+                                vec4 f = vec4(0.61, 0.4, 0.27, 1.0);
+
+ 
+
+                                float step = 1.0 / 4.0;
+
+                                vec4 color = a;
+                                color = mix(color, c, smoothstep(step * 1.0, step * 2.0, vPos.z));
+                                color = mix(color, e, smoothstep(step * 2.0, step * 3.0, vPos.z));
+                                color = mix(color, vec4(1.0), smoothstep(step * 3.0, step * 4.0, vPos.z));
+
+                                gl_FragColor = color;
+                            }
+                            `);
+
                 e = new c.Plane(2, 2, 16, 1);
             this.planeMesh = new c.Mesh(e, t),
             this.planeMesh.setPosition(0, 0, 0),
@@ -2285,7 +2415,7 @@
 
                 void main() {
                     vec4 startColor = vec4(1.0, 1.0, 1.0, 0.9);
-                    vec4 endColor = vec4(10.0 / 255.0, 74.0 / 255.0, 35.0 / 255.0, 1.0);
+                    vec4 endColor = vec4(130.0 / 255.0, 130.0 / 255.0, 130.0 / 255.0, 1.0);
                     float distance = (0.5 - length(vUV - vec2(0.5))) * 1.0;
                     float thickness = (uBaseThickness * (1.0 - uTransition)) + 0.005;
                     float width = smoothstep(0.001 + thickness, 0.0 + thickness, distance);
@@ -2610,11 +2740,11 @@
             this.ctx.fillStyle = "rgb(0, 0, 0)",
             this.ctx.fill(),
             this.ctx.lineWidth = .0025 * this.viewport.width,
-            this.ctx.strokeStyle = "rgba(10, 74, 35, 1)"; //BACKUP STROKE CIRCLE COLORE DEITRO CERCHIO ANIMATION BOOT
+            this.ctx.strokeStyle = "#828282"; //BACKUP STROKE CIRCLE COLORE DEITRO CERCHIO ANIMATION BOOT
             const t = this.canvas.width / this.progress.scale / 2;
             for (var e = 0; e < this.iterations.count; e++) //circle dietro testo, COLOR CIRCLE, COLORE CERCHIO TESTO BACKUP
                 if (this.iterations.objects[e]) {
-                    this.ctx.fillStyle = `rgba(10, 74, 35, ${this.iterations.objects[e].fillOpacity})`; //circle dietro testo, 
+                    this.ctx.fillStyle = `rgba(130, 130, 130, ${this.iterations.objects[e].fillOpacity})`; //circle dietro testo, 
                     const s = this.iterations.objects[e].left / this.progress.scale;
                     this.ctx.beginPath(),
                     this.ctx.arc(s + (this.progress.scale - 1) * (s - t), this.canvas.height / this.progress.scale / 2, this.iterations.radius, 0, 2 * Math.PI, !0),
@@ -2622,8 +2752,8 @@
                     this.ctx.stroke(),
                     this.ctx.fill()
                 }
-            this.ctx.strokeStyle = "rgba(10, 74, 35, 1)", //BACKUP STROKE CIRCLE ULTIMO CERCHIO MOBILE
-            this.ctx.fillStyle = `rgba(10, 74, 35, ${(this.iterations.distance - 1) / 2})`; //BACKUP FILL CIRCLE ULTIMO CERCHIO MOBILE
+            this.ctx.strokeStyle = "#828282", //BACKUP STROKE CIRCLE ULTIMO CERCHIO MOBILE
+            this.ctx.fillStyle = `rgba(130, 130, 130, ${(this.iterations.distance - 1) / 2})`; //BACKUP FILL CIRCLE ULTIMO CERCHIO MOBILE
             const s = this.iterations.left * this.iterations.distance / this.progress.scale;
             this.ctx.beginPath(),
             this.ctx.arc(s + (this.progress.scale - 1) * (s - t), this.canvas.height / this.progress.scale / 2, this.iterations.radius, 0, 2 * Math.PI, !0),
@@ -2635,7 +2765,7 @@
             this.ctx.rect(0, 0, this.canvas.width, this.canvas.height),
             this.ctx.fillStyle = `rgba(0, 0, 0, ${this.iterations.opacity})`,
             this.ctx.fill(),
-            this.clearProgress.value > 0 && (this.ctx.clearRect(this.canvas.width / 2 - this.clearProgress.value * (this.canvas.width / 2), this.canvas.height / 2 - this.clearProgress.value * (this.canvas.height / 2), this.clearProgress.value * this.canvas.width, this.clearProgress.value * this.canvas.height), 1 !== this.clearProgress.value && (this.ctx.beginPath(), this.ctx.rect(this.canvas.width / 2 - this.clearProgress.value * (this.canvas.width / 2), this.canvas.height / 2 - this.clearProgress.value * (this.canvas.height / 2), this.clearProgress.value * this.canvas.width, this.clearProgress.value * this.canvas.height), this.ctx.closePath(), this.ctx.strokeStyle = "rgb(10, 74, 35)", this.ctx.stroke())) //RECTANGLE BACKUP COLOR RETTANGOLO COLORE
+            this.clearProgress.value > 0 && (this.ctx.clearRect(this.canvas.width / 2 - this.clearProgress.value * (this.canvas.width / 2), this.canvas.height / 2 - this.clearProgress.value * (this.canvas.height / 2), this.clearProgress.value * this.canvas.width, this.clearProgress.value * this.canvas.height), 1 !== this.clearProgress.value && (this.ctx.beginPath(), this.ctx.rect(this.canvas.width / 2 - this.clearProgress.value * (this.canvas.width / 2), this.canvas.height / 2 - this.clearProgress.value * (this.canvas.height / 2), this.clearProgress.value * this.canvas.width, this.clearProgress.value * this.canvas.height), this.ctx.closePath(), this.ctx.strokeStyle = "#828282", this.ctx.stroke())) //RECTANGLE BACKUP COLOR RETTANGOLO COLORE
         }
         onResize(t)
         {
@@ -3411,7 +3541,7 @@
         }
         onUpdate(t) { //modifiche
             if (this.progress.value >= 0 && this.progress.value < 1.25) {
-                const gradientColor = interpolateColor("#000000", "#002404", this.progress.value / 1.25);
+                const gradientColor = interpolateColor("#000000", "#3C2D26", this.progress.value / 1.25);
         
                 this.background.forEach((t => {
                     t.style.backgroundColor = gradientColor;
@@ -3419,12 +3549,12 @@
                 }));
             } else if (this.progress.value >= 1.25 && this.progress.value < 1.75) {
                 this.background.forEach((t => {
-                    t.style.backgroundColor = "#401213"; // Darker red
+                    t.style.backgroundColor = "#EEEBDD"; // Darker red
                     t.style.opacity = 1;
                 }));
             } else {
                 this.background.forEach((t => {
-                    t.style.backgroundColor = "#001D20"; // Darker blue
+                    t.style.backgroundColor = "#9b8b75"; // Darker blue
                     t.style.opacity = 1;
                 }));
             }
@@ -3508,13 +3638,13 @@
             
                 void main() {
                     float distance = 0.1 + (1.0 - 0.1) * (-vPos.z - (-0.2828427125)) / (0.2828427125 - (-0.2828427125));
-                    vec3 green = vec3(0.286, 0.608, 0.318);
-                    vec3 red = vec3(0.784, 0.427, 0.396); 
-                    vec3 blue = vec3(0.490, 0.733, 0.890);
+                    vec3 first = vec3(1.0, 1.0, 1.0);
+                    vec3 second = vec3(0.0, 0.0, 0.0);
+                    vec3 third = vec3(1.0, 1.0, 1.0);
 
 
-                    vec3 greenToRed = mix(green, red, uGreenToRed);
-                    vec3 redToBlue = mix(greenToRed, blue, uRedToBlue);
+                    vec3 greenToRed = mix(first, second, uGreenToRed);
+                    vec3 redToBlue = mix(greenToRed, third, uRedToBlue);
                     vec4 color = vec4(redToBlue, 1.0);
             
                     gl_FragColor = color;

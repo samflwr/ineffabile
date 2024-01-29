@@ -592,7 +592,7 @@ footer .footer__inner {
   -webkit-text-fill-color: initial;
   background-clip: initial;
   background-image: none;
-  color: #fff;
+  color: #ffffff;
 }
 .hero span {
   display: inline-block;
@@ -1487,8 +1487,8 @@ footer .footer__inner {
 }
 
 /* 2D 3D 4D COLO BACKUP */
-.enhanced .dimensions--copy span.two {
-  color: #189d47;
+.enhanced .dimensions--copy span.two { /* colore testo, text color, 2d*/
+  color: #ffffff;
   display: inline-block;
   margin-left: 0.25em;
   overflow: visible;
@@ -1502,7 +1502,7 @@ footer .footer__inner {
   display: none;
 }
 .enhanced .dimensions--copy span.three {
-  color: #d66761;
+  color: #927E63;
   display: inline-block;
   margin-left: 0.25em;
   overflow: visible;
@@ -1516,7 +1516,7 @@ footer .footer__inner {
   display: none;
 }
 .enhanced .dimensions--copy span.four {
-  color: #68bde7;
+  color: #ede0d4;
   display: inline-block;
   margin-left: 0.25em;
   overflow: visible;
