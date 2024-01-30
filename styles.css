@@ -2790,7 +2790,7 @@ footer .footer__social li {
   height: 100%;
 }
 footer .footer__social .linkedin {
-  background-image: url("linkedin(icon).svg");
+  background-image: url("src/public/linkedin(icon).svg");
 }
 footer .footer__social .instagram,
 footer .footer__social .linkedin {
@@ -2804,7 +2804,7 @@ footer .footer__social .linkedin {
   will-change: opacity;
 }
 footer .footer__social .instagram {
-  background-image: url(0a08278b1f076ca2e18fcd705ee6d122.svg);
+  background-image: url("src/public/0a08278b1f076ca2e18fcd705ee6d122.svg");
 }
 footer .footer__social a {
   border-radius: 12px;
