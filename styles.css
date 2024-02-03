@@ -169,8 +169,8 @@ body{
 }/* Stili per la visualizzazione mobile ispirati allo stile Apple */
 @media only screen and (max-width: 780px) {
   /* Stile per il contenitore principale mobile */
-  #content {
-    padding: 25px;
+  #content.resume {
+    padding: 20px;
     background-color: #f8f8f8; /* Colore di sfondo grigio chiaro ispirato a Apple */
     border-radius: 25px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Ombra più leggera */
