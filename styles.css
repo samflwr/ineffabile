@@ -169,6 +169,8 @@ body{
 }
 
 
+
+
 .dimensions--copy,
 .error main,
 .navigation,
@@ -197,7 +199,11 @@ footer .footer__inner {
   width: 100%;
   z-index: 2;
 }
+
 @media (max-width: 799px) {
+  article p.keywords span {
+    font-size: 11px;
+  }
   .navigation {
     top: 20px;
   }
