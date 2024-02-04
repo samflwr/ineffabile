@@ -2426,7 +2426,7 @@
                     gl_FragColor = mix(vec4(0.0), finalColor, width);
 
                     // Uncomment the line below for debugging distance
-                    // gl_FragColor = vec4(distance);
+                    //gl_FragColor = vec4(distance);
                 }
                 `);
                 // void main() {
@@ -3541,20 +3541,20 @@
         }
         onUpdate(t) { //modifiche
             if (this.progress.value >= 0 && this.progress.value < 1.25) {
-                const gradientColor = interpolateColor("#000000", "#3C2D26", this.progress.value / 1.25);
+                const gradientColor = interpolateColor("#000000", "#360202", this.progress.value / 1.25);
         
                 this.background.forEach((t => {
                     t.style.backgroundColor = gradientColor;
-                    t.style.opacity = 4 * this.progress.value;
+                    t.style.opacity = 1.35* this.progress.value;
                 }));
             } else if (this.progress.value >= 1.25 && this.progress.value < 1.75) {
                 this.background.forEach((t => {
-                    t.style.backgroundColor = "#EEEBDD"; // Darker red
+                    t.style.backgroundColor = "#EDEBDE"; // Darker red
                     t.style.opacity = 1;
                 }));
             } else {
                 this.background.forEach((t => {
-                    t.style.backgroundColor = "#9b8b75"; // Darker blue
+                    t.style.backgroundColor = "#7B6758"; // Darker blue
                     t.style.opacity = 1;
                 }));
             }
@@ -4230,7 +4230,7 @@
             this.ctx.font = `600 ${this.progress.fontSize}vw Articulat CF`,
             this.text = this.ctx.measureText("stories"),
             this.lastChar = this.ctx.measureText("s"),
-            this.ctx.fillText("stories", this.progress.xPosition+50 - this.text.width / 2 - (this.text.width / 2 - this.lastChar.width / 2) * this.progress.xOffset, this.progress.yPosition + this.lastChar.actualBoundingBoxAscent / 2 * this.progress.xOffset)
+            this.ctx.fillText("stories", this.progress.xPosition+0 - this.text.width / 2 - (this.text.width / 2 - this.lastChar.width / 2) * this.progress.xOffset, this.progress.yPosition + this.lastChar.actualBoundingBoxAscent / 2 * this.progress.xOffset)
         }
         setImageDimensions()
         {
